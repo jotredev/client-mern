@@ -1,5 +1,6 @@
 import useAuth from '../../hooks/useAuth';
 
+// eslint-disable-next-line react/prop-types
 export const Header = ({ setShowSidebar }) => {
   const { auth } = useAuth();
 
