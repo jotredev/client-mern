@@ -1,5 +1,19 @@
-@import '@flaticon/flaticon-uicons/css/all/all';
+@import "@flaticon/flaticon-uicons/css/all/all";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  i {
+    margin-top: 0.25rem;
+  }
+}
+
+.ql-editor {
+  font-size: 16px;
+}
+
+.ql-disabled {
+  border: none !important;
+}

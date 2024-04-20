@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import api from "../../lib/Axios";
@@ -11,7 +11,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
+  const { auth, setAuth } = useAuth();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -38,6 +38,8 @@ const LoginPage = () => {
       toast.error(error.response.data.message);
     }
   };
+
+  if (auth._id) return <Navigate to="/" />;
 
   return (
     <form onSubmit={onSubmit} className="space-y-7">
