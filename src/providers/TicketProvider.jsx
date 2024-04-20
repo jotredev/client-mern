@@ -56,13 +56,52 @@ const TicketProvider = ({ children }) => {
         config
       );
 
-      if (data) {
-        const response = await api.get(`/tickets/${ticket._id}`, config);
-        setTicket(response.data);
+      if (data.response === "success") {
+        toast.success(data.message);
+        setTicket({ ...ticket, assignedTo: data.ticket.assignedTo });
       }
     } catch (error) {
       console.log(error);
+      toast.error(error.response.data.message);
+      setTicket({ ...ticket });
+    }
+  };
+
+  const ticketInProcess = async (dueDate) => {
+    try {
+      const { data } = await api.put(
+        `/tickets/in-process/${ticket._id}`,
+        dueDate,
+        config
+      );
+
+      if (data.response === "success") {
+        toast.success(data.message);
+        setTicket(data.ticket);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
       setTicket({});
+    }
+  };
+
+  const closeTicket = async () => {
+    try {
+      const { data } = await api.put(
+        `/tickets/close-ticket/${ticket._id}`,
+        {},
+        config
+      );
+
+      if (data.response === "success") {
+        toast.success(data.message);
+        setTicket(data.ticket);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+      setTicket({ ...ticket });
     }
   };
 
@@ -74,6 +113,8 @@ const TicketProvider = ({ children }) => {
         createTicket,
         getTicketById,
         assignUserSupport,
+        ticketInProcess,
+        closeTicket,
       }}
     >
       {children}
