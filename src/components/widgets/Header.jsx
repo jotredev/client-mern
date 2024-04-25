@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 // eslint-disable-next-line react/prop-types
@@ -13,19 +14,29 @@ export const Header = ({ setShowSidebar }) => {
       </section>
       <nav>
         <ul>
-          <li className="flex items-center gap-4">
-            <span className="w-10 h-10 flex items-center justify-center bg-black text-white rounded-full font-bold">
-              {auth.name.charAt(0)}
-              {auth.lastName.charAt(0)}
-            </span>
-            <div>
-              <h5 className="font-bold">
-                {auth.name}
-                {` `}
-                {auth.lastName}
-              </h5>
-              <p className="text-sm text-gray-500">{auth.email}</p>
-            </div>
+          <li>
+            <Link to="/profile" className="flex items-center gap-4">
+              {auth.avatar.url !== "" ? (
+                <img
+                  src={auth.avatar.url}
+                  alt={auth.name}
+                  className="w-10 h-10 rounded-full"
+                />
+              ) : (
+                <span className="w-10 h-10 flex items-center justify-center bg-black text-white rounded-full font-bold">
+                  {auth.name.charAt(0)}
+                  {auth.lastName.charAt(0)}
+                </span>
+              )}
+              <div>
+                <h5 className="font-bold">
+                  {auth.name}
+                  {` `}
+                  {auth.lastName}
+                </h5>
+                <p className="text-sm text-gray-500">{auth.email}</p>
+              </div>
+            </Link>
           </li>
         </ul>
       </nav>

@@ -17,6 +17,7 @@ import ConfirmAccount from "./pages/Auth/ConfirmAccount";
 import HomeTickets from "./pages/Admin/Tickets";
 import CreateTicketPage from "./pages/Admin/Tickets/CreateTicket";
 import TicketDetails from "./pages/Admin/Tickets/TicketDetails";
+import ProfilePage from "./pages/Admin/User/Profile";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/" element={<MainLayout />}>
             <Route index element={<HomePage />} />
             <Route path="about" element={<AboutPage />} />
+            <Route path="profile" element={<ProfilePage />} />
           </Route>
           <Route element={<AuthLayout />}>
             <Route path="/auth/login" element={<LoginPage />} />

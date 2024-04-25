@@ -4,7 +4,12 @@ import { CardTicket } from "../../../components/widgets/CardTicket";
 import { Link } from "react-router-dom";
 
 const HomeTickets = () => {
-  const [tickets, setTickets] = useState([]);
+  const [tickets, setTickets] = useState({
+    results: [],
+    page: 1,
+    totalDocs: 0,
+  });
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     (async () => {
@@ -22,13 +27,25 @@ const HomeTickets = () => {
       };
 
       try {
-        const { data } = await api.get("/tickets", config);
-        setTickets(data);
+        const { data } = await api.post("/tickets/get-all", { page }, config);
+
+        const count = await api.get("/tickets/count/total", config);
+
+        setTickets((prevState) => ({
+          ...prevState,
+          results: [...prevState.results, ...data],
+          page,
+          totalDocs: count.data.totalDocs,
+        }));
       } catch (error) {
-        setTickets([]);
+        setTickets({
+          results: [],
+          page: 1,
+          totalDocs: 0,
+        });
       }
     })();
-  }, []);
+  }, [page]);
 
   return (
     <div>
@@ -43,14 +60,30 @@ const HomeTickets = () => {
           </Link>
         </div>
         <div>
-          {tickets.length > 0 ? (
-            <ul>
-              {tickets.map((ticket) => (
-                <li key={ticket._id}>
-                  <CardTicket data={ticket} />
-                </li>
-              ))}
-            </ul>
+          {tickets.results.length ? (
+            <>
+              <ul>
+                {tickets.results.map((ticket) => (
+                  <li key={ticket._id}>
+                    <CardTicket data={ticket} />
+                  </li>
+                ))}
+              </ul>
+              {tickets.totalDocs > tickets.results.length ? (
+                <div className="py-5 text-center">
+                  <button
+                    onClick={() => setPage(page + 1)}
+                    className="bg-gray-100 py-2 px-4 rounded-md"
+                  >
+                    Cargar más
+                  </button>
+                </div>
+              ) : (
+                <div className="py-5 text-center">
+                  <p>No hay más tickets que mostrar</p>
+                </div>
+              )}
+            </>
           ) : (
             <p>No hay tickets</p>
           )}
